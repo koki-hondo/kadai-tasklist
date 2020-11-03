@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Task;
+
 class TasksController extends Controller
 {
     /**
@@ -14,11 +16,11 @@ class TasksController extends Controller
     public function index()
     {
         // メッセージ一覧を取得
-        $messages = Task::all();
+        $tasks = Task::all();
 
         // メッセージ一覧ビューでそれを表示
         return view('tasks.index', [
-            'messages' => $messages,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -29,11 +31,11 @@ class TasksController extends Controller
      */
     public function create()
     {
-        $message = new Task;
+        $task = new Task;
 
         // メッセージ作成ビューを表示
         return view('tasks.create', [
-            'message' => $message,
+            'task' => $task,
         ]);
     }
 
@@ -45,10 +47,16 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'status' => 'required|max:10',   // 追加
+            'content' => 'required|max:255',
+        ]);
+        
         // メッセージを作成
-        $message = new Task;
-        $message->content = $request->content;
-        $message->save();
+        $task = new Task;
+        $task->status = $request->status;
+        $task->content = $request->content;
+        $task->save();
 
         // トップページへリダイレクトさせる
         return redirect('/');
@@ -63,11 +71,11 @@ class TasksController extends Controller
     public function show($id)
     {
         // idの値でメッセージを検索して取得
-        $message = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
 
         // メッセージ詳細ビューでそれを表示
-        return view('task.show', [
-            'message' => $message,
+        return view('tasks.show', [
+            'task' => $task,
         ]);
     }
 
@@ -80,11 +88,11 @@ class TasksController extends Controller
     public function edit($id)
     {
         // idの値でメッセージを検索して取得
-        $message = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
 
         // メッセージ編集ビューでそれを表示
         return view('tasks.edit', [
-            'message' => $message,
+            'task' => $task,
         ]);
     }
 
@@ -97,11 +105,17 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'status' => 'required|max:10',   // 追加
+            'content' => 'required|max:255',
+        ]);
+        
         // idの値でメッセージを検索して取得
-        $message = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         // メッセージを更新
-        $message->content = $request->content;
-        $message->save();
+        $task->status = $request->status;
+        $task->content = $request->content;
+        $task->save();
 
         // トップページへリダイレクトさせる
         return redirect('/');
@@ -116,9 +130,9 @@ class TasksController extends Controller
     public function destroy($id)
     {
         // idの値でメッセージを検索して取得
-        $message = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         // メッセージを削除
-        $message->delete();
+        $task->delete();
 
         // トップページへリダイレクトさせる
         return redirect('/');

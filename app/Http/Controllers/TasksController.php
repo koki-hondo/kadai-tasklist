@@ -70,12 +70,11 @@ class TasksController extends Controller
         
         // メッセージを作成
         $task = new Task;
-        if (\Auth::id() === $task->user_id) {
+        
         $request->user()->tasks()->create([
             'content' => $request->content,
             'status' =>$request->status,
         ]);
-        }
 
         // トップページへリダイレクトさせる
         return redirect('/');
@@ -98,7 +97,6 @@ class TasksController extends Controller
             'task' => $task,
         ]);
         }
-        return redirect('/');
     }
 
     /**
@@ -113,12 +111,9 @@ class TasksController extends Controller
         $task = Task::findOrFail($id);
 
         // メッセージ編集ビューでそれを表示
-        if (\Auth::id() === $task->user_id) {
         return view('tasks.edit', [
             'task' => $task,
         ]);
-        }
-        return redirect('/');
     }
 
     /**

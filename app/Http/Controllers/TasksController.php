@@ -94,9 +94,11 @@ class TasksController extends Controller
         $task = Task::findOrFail($id);
 
         // メッセージ詳細ビューでそれを表示
+        if (\Auth::id() === $task->user_id) {
         return view('tasks.show', [
             'task' => $task,
         ]);
+        }
     }
 
     /**
@@ -131,11 +133,13 @@ class TasksController extends Controller
         ]);
         
         // idの値でメッセージを検索して取得
+        if (\Auth::id() === $task->user_id) {
         $task = Task::findOrFail($id);
         // メッセージを更新
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
+        }
 
         // トップページへリダイレクトさせる
         return redirect('/');

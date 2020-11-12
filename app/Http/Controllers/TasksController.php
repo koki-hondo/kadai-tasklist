@@ -70,8 +70,6 @@ class TasksController extends Controller
         
         // メッセージを作成
         $task = new Task;
-        $task->status = $request->status;
-        $task->content = $request->content;
         
         $request->user()->tasks()->create([
             'content' => $request->content,
@@ -133,9 +131,9 @@ class TasksController extends Controller
         ]);
         
         // idの値でメッセージを検索して取得
-        if (\Auth::id() === $task->user_id) {
         $task = Task::findOrFail($id);
         // メッセージを更新
+        if (\Auth::id() === $task->user_id) {
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();

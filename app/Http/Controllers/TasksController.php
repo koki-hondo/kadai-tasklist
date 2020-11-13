@@ -38,6 +38,8 @@ class TasksController extends Controller
         // Welcomeビューでそれらを表示
         return view('welcome', $data);
         
+        return redirect('/');
+        
     }
 
     /**
@@ -53,6 +55,8 @@ class TasksController extends Controller
         return view('tasks.create', [
             'task' => $task,
         ]);
+        
+        return redirect('/');
     }
 
     /**
@@ -97,6 +101,8 @@ class TasksController extends Controller
             'task' => $task,
         ]);
         }
+        
+        return redirect('/');
     }
 
     /**
@@ -114,6 +120,8 @@ class TasksController extends Controller
         return view('tasks.edit', [
             'task' => $task,
         ]);
+        
+        return redirect('/');
     }
 
     /**
